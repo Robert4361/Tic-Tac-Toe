@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# this class is used for printing the game area, and for putting player symbols
+# this class is used for printing the game area and for putting player symbols
 class Board
   attr_reader :area
 
@@ -8,8 +8,15 @@ class Board
     @area = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
   end
 
-  def swap(number, symbol)
-    row = @area.index { |rows| rows.index(number) }
+  def swap(symbol)
+    print_board
+    puts 'choose a number'
+    number, row = nil
+    loop do
+      number = gets.chomp.to_i
+      row = @area.index { |rows| rows.include?(number) }
+      break unless row.nil?
+    end
     @area[row][@area[row].index(number)] = symbol
   end
 
