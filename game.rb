@@ -2,7 +2,6 @@
 
 require './player'
 require './board'
-require 'pry'
 
 # this class is the main class used for playing the game
 class Game
