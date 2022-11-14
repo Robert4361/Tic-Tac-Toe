@@ -2,6 +2,7 @@
 
 require './player'
 require './board'
+require 'pry'
 
 # this class is the main class used for playing the game
 class Game
@@ -28,10 +29,12 @@ class Game
 
   def move
     case @turn
-    when @turn.zero?
+    when 0
+      puts "#{@player1.name}'s turn"
       @board.swap(@player1.symbol)
       @turn = 1
-    when @turn == 1
+    when 1
+      puts "#{@player2.name}'s turn"
       @board.swap(@player2.symbol)
       @turn = 0
     end
@@ -39,21 +42,29 @@ class Game
 
   def equal_rows? # rubocop:disable Metrics/AbcSize
     3.times do |i|
-      return true if @board[i][0] == @board[i][1] && @board[i][1] == @board[i][2] ||
-                     @board[0][i] == @board[1][i] && @board[1][i] == @board[2][i]
+      return true if @board.area[i][0] == @board.area[i][1] && @board.area[i][1] == @board.area[i][2] ||
+                     @board.area[0][i] == @board.area[1][i] && @board.area[1][i] == @board.area[2][i]
     end
     false
   end
 
   def equal_diagonals? # rubocop:disable Metrics/AbcSize
-    return true if @board[0][0] == @board[1][1] && @board[1][1] == @board[2][2] ||
-                   @board[0][2] == @board[1][1] && @board[1][1] == @board[2][0]
+    return true if @board.area[0][0] == @board.area[1][1] && @board.area[1][1] == @board.area[2][2] ||
+                   @board.area[0][2] == @board.area[1][1] && @board.area[1][1] == @board.area[2][0]
 
     false
   end
 
   def won?
-    return true if equal_rows? && equal_diagonals?
+    if equal_rows? || equal_diagonals?
+      case @turn
+      when 0
+        puts "#{@player2.name} won"
+      when 1
+        puts "#{@player1.name} won"
+      end
+      return true
+    end
 
     false
   end
